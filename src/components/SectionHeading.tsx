@@ -18,21 +18,22 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   const isCenter = align === 'center';
 
   return (
-    <div className={`mb-10 sm:mb-14 ${isCenter ? 'text-center mx-auto max-w-3xl' : 'max-w-3xl'} ${className}`}>
+    <div className={`mb-10 sm:mb-12 ${isCenter ? 'text-center mx-auto max-w-3xl' : 'max-w-2xl'} ${className}`}>
       {kicker && (
-        <div className="flex items-center gap-2 mb-2.5 font-mono text-xs uppercase tracking-widest text-[#C4B5FD] font-semibold">
-          {isCenter && <span className="w-6 h-[1px] bg-[#8B5CF6]" />}
-          <span>{kicker}</span>
-          <span className="w-6 h-[1px] bg-[#8B5CF6]" />
-        </div>
+        <p className="text-xs font-medium text-[#C4B5FD] tracking-wide mb-2.5">
+          {kicker}
+        </p>
       )}
 
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-[#F5F3FF] tracking-tight leading-[1.15]">
+      <h2
+        className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#F5F3FF] tracking-tight leading-[1.2]"
+        style={{ textWrap: 'balance' }}
+      >
         {title}
       </h2>
 
       {description && (
-        <p className="mt-4 text-base sm:text-lg text-[#A7A1B5] leading-relaxed">
+        <p className="mt-3.5 text-sm sm:text-base text-[#A7A1B5] leading-relaxed">
           {description}
         </p>
       )}
