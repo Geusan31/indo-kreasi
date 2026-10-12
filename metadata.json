@@ -1,0 +1,6 @@
+{
+  "name": "PT Indo Kreasi — Game Development Studio",
+  "description": "Website resmi dan showcase portofolio game PT Indo Kreasi, studio game development terdepan yang menghadirkan pengalaman dunia virtual dan karya game interaktif berkualitas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
