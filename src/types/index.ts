@@ -48,6 +48,7 @@ export interface Game {
   keyFeatures?: string[];
   techStack?: string[];
   targetRelease?: string;
+  developmentStage?: string;
   heroImage?: string;
   playerMode?: string;
   stats?: {

@@ -27,8 +27,13 @@ export const Home: React.FC = () => {
         secMap[s.section_key] = s;
       });
 
+      let gamesToDisplay = gamesData;
+      if (gamesToDisplay.length === 0) {
+        gamesToDisplay = await getGames({ status: 'published' });
+      }
+
       setSections(secMap);
-      setFeaturedGames(gamesData);
+      setFeaturedGames(gamesToDisplay);
       setServices(srvData);
     } catch (err) {
       console.error('Error loading homepage data:', err);

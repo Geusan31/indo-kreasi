@@ -28,7 +28,7 @@ const STORAGE_KEYS = {
   MEDIA: 'indokreasi_media',
 };
 
-// Memory cache / Local storage helper
+// Memory cache / Local storage helper with automatic data integrity healing
 function getLocalItem<T>(key: string, defaultValue: T): T {
   try {
     const item = localStorage.getItem(key);
@@ -36,7 +36,24 @@ function getLocalItem<T>(key: string, defaultValue: T): T {
       localStorage.setItem(key, JSON.stringify(defaultValue));
       return defaultValue;
     }
-    return JSON.parse(item);
+    const parsed = JSON.parse(item);
+
+    // Auto-heal legacy game entries where status wasn't 'published'
+    if (key === STORAGE_KEYS.GAMES && Array.isArray(parsed)) {
+      let changed = false;
+      parsed.forEach((g: any) => {
+        if (!['draft', 'archived', 'published'].includes(g.status)) {
+          g.developmentStage = g.developmentStage || g.status;
+          g.status = 'published';
+          changed = true;
+        }
+      });
+      if (changed) {
+        localStorage.setItem(key, JSON.stringify(parsed));
+      }
+    }
+
+    return parsed;
   } catch (err) {
     console.warn(`Error reading localStorage ${key}:`, err);
     return defaultValue;
@@ -100,7 +117,11 @@ export async function getGames(options?: {
   let list = getLocalItem<Game[]>(STORAGE_KEYS.GAMES, INITIAL_GAMES);
 
   if (options?.status) {
-    list = list.filter((g) => g.status === options.status);
+    if (options.status === 'published') {
+      list = list.filter((g) => g.status === 'published' || !['draft', 'archived'].includes(g.status));
+    } else {
+      list = list.filter((g) => g.status === options.status);
+    }
   }
   if (options?.category && options.category !== 'Semua Kategori') {
     list = list.filter((g) => g.category === options.category);
@@ -795,3 +816,134 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     recentInquiries: inquiries.slice(0, 4),
   };
 }
+
+// ------------------------------------------------------------------------------
+// SUPABASE ONE-CLICK SEED & SYNC
+// ------------------------------------------------------------------------------
+
+export async function syncSeedDataToSupabase(): Promise<{
+  success: boolean;
+  message: string;
+  counts?: {
+    games: number;
+    services: number;
+    sections: number;
+    company: boolean;
+  };
+}> {
+  if (!isSupabaseConfigured) {
+    return {
+      success: false,
+      message:
+        'Kunci Supabase belum terkonfigurasi. Pastikan VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY telah diisi di file .env atau Environment Variables hosting Anda.',
+    };
+  }
+
+  try {
+    // 1. Verify table accessibility
+    const { error: testErr } = await supabase.from('company_info').select('id').limit(1);
+    if (testErr) {
+      return {
+        success: false,
+        message: `Tabel belum ada di database Supabase (${testErr.message}). Silakan jalankan skrip SQL migrasi (001_initial_schema.sql) di Supabase SQL Editor terlebih dahulu.`,
+      };
+    }
+
+    // 2. Sync Company Info
+    const companyPayload = {
+      company_name: INITIAL_COMPANY_INFO.company_name,
+      tagline: INITIAL_COMPANY_INFO.tagline,
+      description: INITIAL_COMPANY_INFO.description,
+      vision: INITIAL_COMPANY_INFO.vision,
+      mission: INITIAL_COMPANY_INFO.mission,
+      email: INITIAL_COMPANY_INFO.email,
+      phone: INITIAL_COMPANY_INFO.phone,
+      address: INITIAL_COMPANY_INFO.address,
+      logo_url: INITIAL_COMPANY_INFO.logo_url,
+      about_image_url: INITIAL_COMPANY_INFO.about_image_url,
+      social_links: INITIAL_COMPANY_INFO.social_links,
+      updated_at: new Date().toISOString(),
+    };
+    await supabase.from('company_info').upsert(companyPayload, { onConflict: 'company_name' });
+
+    // 3. Sync Homepage Sections
+    for (const sec of INITIAL_HOMEPAGE_SECTIONS) {
+      await supabase.from('homepage_sections').upsert(
+        {
+          section_key: sec.section_key,
+          title: sec.title,
+          subtitle: sec.subtitle,
+          description: sec.description,
+          button_text: sec.button_text,
+          button_url: sec.button_url,
+          is_visible: sec.is_visible,
+          sort_order: sec.sort_order,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'section_key' }
+      );
+    }
+
+    // 4. Sync Services
+    for (const srv of INITIAL_SERVICES) {
+      await supabase.from('services').upsert(
+        {
+          title: srv.title,
+          slug: srv.slug,
+          short_description: srv.short_description,
+          description: srv.description,
+          icon: srv.icon,
+          featured: srv.featured,
+          sort_order: srv.sort_order,
+          is_active: srv.is_active,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'slug' }
+      );
+    }
+
+    // 5. Sync Games
+    for (const g of INITIAL_GAMES) {
+      await supabase.from('games').upsert(
+        {
+          title: g.title,
+          slug: g.slug,
+          short_description: g.short_description,
+          description: g.description,
+          category: g.category,
+          status: 'published',
+          platform: g.platform,
+          release_date: g.release_date,
+          cover_image_url: g.cover_image_url,
+          banner_image_url: g.banner_image_url,
+          gallery: g.gallery,
+          external_url: g.external_url,
+          featured: g.featured,
+          sort_order: g.sort_order,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'slug' }
+      );
+    }
+
+    // Dispatch event to refresh frontend state
+    window.dispatchEvent(new Event('indokreasi_data_updated'));
+
+    return {
+      success: true,
+      message: 'Semua 6 game, 5 layanan, seksi homepage, dan profil studio berhasil disinkronkan ke Supabase!',
+      counts: {
+        games: INITIAL_GAMES.length,
+        services: INITIAL_SERVICES.length,
+        sections: INITIAL_HOMEPAGE_SECTIONS.length,
+        company: true,
+      },
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: `Gagal sinkronisasi data ke Supabase: ${err.message || 'Error tidak diketahui'}`,
+    };
+  }
+}
+

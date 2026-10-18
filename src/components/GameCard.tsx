@@ -32,7 +32,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
           <div className="flex items-center gap-2 text-xs text-[#A7A1B5]">
             <span className="text-[#C4B5FD] font-medium">{game.category}</span>
             <span aria-hidden="true" className="text-[#332A45]">·</span>
-            <span className="capitalize">{game.status}</span>
+            <span className="capitalize">{game.developmentStage || (game.status === 'published' ? 'Katalog Aktif' : game.status)}</span>
           </div>
 
           <h3 className="font-display font-semibold text-lg sm:text-xl text-[#F5F3FF] group-hover:text-white transition-colors leading-snug">

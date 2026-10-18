@@ -126,7 +126,7 @@ export const GameDetail: React.FC = () => {
               <div className="flex items-center gap-2 text-xs text-[#A7A1B5]">
                 <span className="text-[#C4B5FD] font-semibold">{game.category}</span>
                 <span aria-hidden="true" className="text-[#332A45]">·</span>
-                <span className="capitalize">{game.status}</span>
+                <span className="capitalize">{game.developmentStage || (game.status === 'published' ? 'Katalog Aktif' : game.status)}</span>
               </div>
 
               <h1
