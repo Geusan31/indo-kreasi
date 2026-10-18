@@ -148,11 +148,13 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- ------------------------------------------------------------------------------
 -- PROFILES POLICIES
 -- ------------------------------------------------------------------------------
+DROP POLICY IF EXISTS "Admins can view profiles" ON public.profiles;
 CREATE POLICY "Admins can view profiles"
   ON public.profiles FOR SELECT
   TO authenticated
   USING (auth.uid() = id OR public.is_admin());
 
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
   TO authenticated
@@ -161,21 +163,27 @@ CREATE POLICY "Users can update own profile"
 -- ------------------------------------------------------------------------------
 -- GAMES POLICIES
 -- ------------------------------------------------------------------------------
+-- Public can view published games only
+DROP POLICY IF EXISTS "Public can view published games" ON public.games;
 CREATE POLICY "Public can view published games"
   ON public.games FOR SELECT
   TO anon, authenticated
   USING (status = 'published' OR public.is_admin());
 
+-- Admins can insert, update, delete games
+DROP POLICY IF EXISTS "Admins can insert games" ON public.games;
 CREATE POLICY "Admins can insert games"
   ON public.games FOR INSERT
   TO authenticated
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update games" ON public.games;
 CREATE POLICY "Admins can update games"
   ON public.games FOR UPDATE
   TO authenticated
   USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can delete games" ON public.games;
 CREATE POLICY "Admins can delete games"
   ON public.games FOR DELETE
   TO authenticated
@@ -184,21 +192,27 @@ CREATE POLICY "Admins can delete games"
 -- ------------------------------------------------------------------------------
 -- SERVICES POLICIES
 -- ------------------------------------------------------------------------------
+-- Public can view active services
+DROP POLICY IF EXISTS "Public can view active services" ON public.services;
 CREATE POLICY "Public can view active services"
   ON public.services FOR SELECT
   TO anon, authenticated
   USING (is_active = true OR public.is_admin());
 
+-- Admins can insert, update, delete services
+DROP POLICY IF EXISTS "Admins can insert services" ON public.services;
 CREATE POLICY "Admins can insert services"
   ON public.services FOR INSERT
   TO authenticated
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update services" ON public.services;
 CREATE POLICY "Admins can update services"
   ON public.services FOR UPDATE
   TO authenticated
   USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can delete services" ON public.services;
 CREATE POLICY "Admins can delete services"
   ON public.services FOR DELETE
   TO authenticated
@@ -207,16 +221,21 @@ CREATE POLICY "Admins can delete services"
 -- ------------------------------------------------------------------------------
 -- COMPANY_INFO POLICIES
 -- ------------------------------------------------------------------------------
+-- Public can view company info
+DROP POLICY IF EXISTS "Public can view company info" ON public.company_info;
 CREATE POLICY "Public can view company info"
   ON public.company_info FOR SELECT
   TO anon, authenticated
   USING (true);
 
+-- Admins can update company info
+DROP POLICY IF EXISTS "Admins can insert company info" ON public.company_info;
 CREATE POLICY "Admins can insert company info"
   ON public.company_info FOR INSERT
   TO authenticated
   WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update company info" ON public.company_info;
 CREATE POLICY "Admins can update company info"
   ON public.company_info FOR UPDATE
   TO authenticated
@@ -225,11 +244,13 @@ CREATE POLICY "Admins can update company info"
 -- ------------------------------------------------------------------------------
 -- HOMEPAGE_SECTIONS POLICIES
 -- ------------------------------------------------------------------------------
+DROP POLICY IF EXISTS "Public can view homepage sections" ON public.homepage_sections;
 CREATE POLICY "Public can view homepage sections"
   ON public.homepage_sections FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can update homepage sections" ON public.homepage_sections;
 CREATE POLICY "Admins can update homepage sections"
   ON public.homepage_sections FOR UPDATE
   TO authenticated
@@ -238,21 +259,25 @@ CREATE POLICY "Admins can update homepage sections"
 -- ------------------------------------------------------------------------------
 -- INQUIRIES POLICIES
 -- ------------------------------------------------------------------------------
+DROP POLICY IF EXISTS "Public can insert contact inquiries" ON public.inquiries;
 CREATE POLICY "Public can insert contact inquiries"
   ON public.inquiries FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Admins can view inquiries" ON public.inquiries;
 CREATE POLICY "Admins can view inquiries"
   ON public.inquiries FOR SELECT
   TO authenticated
   USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update inquiries" ON public.inquiries;
 CREATE POLICY "Admins can update inquiries"
   ON public.inquiries FOR UPDATE
   TO authenticated
   USING (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can delete inquiries" ON public.inquiries;
 CREATE POLICY "Admins can delete inquiries"
   ON public.inquiries FOR DELETE
   TO authenticated
@@ -261,11 +286,13 @@ CREATE POLICY "Admins can delete inquiries"
 -- ------------------------------------------------------------------------------
 -- MEDIA POLICIES
 -- ------------------------------------------------------------------------------
+DROP POLICY IF EXISTS "Public can view media" ON public.media;
 CREATE POLICY "Public can view media"
   ON public.media FOR SELECT
   TO anon, authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage media records" ON public.media;
 CREATE POLICY "Admins can manage media records"
   ON public.media FOR ALL
   TO authenticated
@@ -292,21 +319,25 @@ ON CONFLICT (id) DO UPDATE SET
   allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
 
 -- 2. Storage RLS Policies for website-assets bucket
+DROP POLICY IF EXISTS "Public can view website assets" ON storage.objects;
 CREATE POLICY "Public can view website assets"
   ON storage.objects FOR SELECT
   TO anon, authenticated
   USING (bucket_id = 'website-assets');
 
+DROP POLICY IF EXISTS "Admins can upload website assets" ON storage.objects;
 CREATE POLICY "Admins can upload website assets"
   ON storage.objects FOR INSERT
   TO authenticated
   WITH CHECK (bucket_id = 'website-assets');
 
+DROP POLICY IF EXISTS "Admins can update website assets" ON storage.objects;
 CREATE POLICY "Admins can update website assets"
   ON storage.objects FOR UPDATE
   TO authenticated
   USING (bucket_id = 'website-assets');
 
+DROP POLICY IF EXISTS "Admins can delete website assets" ON storage.objects;
 CREATE POLICY "Admins can delete website assets"
   ON storage.objects FOR DELETE
   TO authenticated

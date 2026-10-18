@@ -20,24 +20,28 @@ ON CONFLICT (id) DO UPDATE SET
 -- 2. Storage RLS Policies for website-assets bucket
 
 -- Public read access: Anyone can view assets in 'website-assets'
+DROP POLICY IF EXISTS "Public can view website assets" ON storage.objects;
 CREATE POLICY "Public can view website assets"
   ON storage.objects FOR SELECT
   TO anon, authenticated
   USING (bucket_id = 'website-assets');
 
 -- Admin write access: Authenticated users can upload to 'website-assets'
+DROP POLICY IF EXISTS "Admins can upload website assets" ON storage.objects;
 CREATE POLICY "Admins can upload website assets"
   ON storage.objects FOR INSERT
   TO authenticated
   WITH CHECK (bucket_id = 'website-assets');
 
 -- Admin update access
+DROP POLICY IF EXISTS "Admins can update website assets" ON storage.objects;
 CREATE POLICY "Admins can update website assets"
   ON storage.objects FOR UPDATE
   TO authenticated
   USING (bucket_id = 'website-assets');
 
 -- Admin delete access
+DROP POLICY IF EXISTS "Admins can delete website assets" ON storage.objects;
 CREATE POLICY "Admins can delete website assets"
   ON storage.objects FOR DELETE
   TO authenticated
