@@ -1,27 +1,61 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Search, RotateCcw } from 'lucide-react';
 import { SectionHeading } from '../components/SectionHeading';
 import { GameCard } from '../components/GameCard';
-import { GAMES_DATA, GAME_CATEGORIES } from '../data/games';
+import { getGames } from '../lib/db';
+import { Game } from '../types';
+import { LoadingState } from '../components/ui/LoadingState';
 
 export const Games: React.FC = () => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
 
+  const loadGames = async () => {
+    try {
+      setLoading(true);
+      // Public users ONLY see published games
+      const data = await getGames({ status: 'published' });
+      setGames(data);
+    } catch (err) {
+      console.error('Error fetching published games:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadGames();
+    window.addEventListener('indokreasi_data_updated', loadGames);
+    return () => {
+      window.removeEventListener('indokreasi_data_updated', loadGames);
+    };
+  }, []);
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    games.forEach((g) => {
+      if (g.category) set.add(g.category);
+    });
+    return ['Semua Kategori', ...Array.from(set)];
+  }, [games]);
+
   const filteredGames = useMemo(() => {
-    return GAMES_DATA.filter((game) => {
+    return games.filter((game) => {
+      const q = searchQuery.toLowerCase();
       const matchesSearch =
-        game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.keyFeatures.some((f) => f.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        game.platforms.some((p) => p.toLowerCase().includes(searchQuery.toLowerCase()));
+        game.title.toLowerCase().includes(q) ||
+        (game.short_description && game.short_description.toLowerCase().includes(q)) ||
+        (game.description && game.description.toLowerCase().includes(q)) ||
+        (game.platform && game.platform.toLowerCase().includes(q));
 
       const matchesCategory =
         selectedCategory === 'Semua Kategori' || game.category === selectedCategory;
 
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [games, searchQuery, selectedCategory]);
 
   const handleResetFilters = () => {
     setSearchQuery('');
@@ -34,10 +68,10 @@ export const Games: React.FC = () => {
         <SectionHeading
           kicker="Katalog Proyek"
           title="Portofolio Game PT Indo Kreasi"
-          description="Eksplorasi jajaran proyek game orisinal kami. Gunakan kotak pencarian atau pilih kategori untuk menyaring daftar."
+          description="Eksplorasi jajaran proyek game orisinal yang telah kami rilis dan sedang aktif dikembangkan. Gunakan pencarian dan filter kategori di bawah."
         />
 
-        {/* Filter Toolbar: Clean segmented layout */}
+        {/* Filter Toolbar */}
         <div className="mb-10 space-y-4 bg-[#171321] border border-[#332A45] rounded-xl p-5">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             <div className="relative flex-1 max-w-lg">
@@ -46,7 +80,7 @@ export const Games: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari berdasarkan judul, mekanik, atau kata kunci..."
+                placeholder="Cari berdasarkan judul, mekanik, atau platform..."
                 className="w-full pl-10 pr-4 py-2 rounded-lg bg-[#201A2D] border border-[#332A45] text-xs sm:text-sm text-[#F5F3FF] placeholder-[#A7A1B5]/60 focus:outline-none focus:ring-1 focus:ring-[#8B5CF6] transition-colors"
                 aria-label="Cari game"
               />
@@ -62,13 +96,13 @@ export const Games: React.FC = () => {
             </div>
 
             <div className="text-xs text-[#A7A1B5]">
-              Menampilkan <span className="font-semibold text-[#F5F3FF]">{filteredGames.length}</span> dari {GAMES_DATA.length} game
+              Menampilkan <span className="font-semibold text-[#F5F3FF]">{filteredGames.length}</span> dari {games.length} game
             </div>
           </div>
 
           {/* Category Filter Buttons */}
           <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-[#332A45]/70">
-            {GAME_CATEGORIES.map((category) => {
+            {categories.map((category) => {
               const isSelected = selectedCategory === category;
               return (
                 <button
@@ -89,7 +123,9 @@ export const Games: React.FC = () => {
         </div>
 
         {/* Results */}
-        {filteredGames.length > 0 ? (
+        {loading ? (
+          <LoadingState message="Memuat portofolio game..." />
+        ) : filteredGames.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredGames.map((game) => (
               <GameCard key={game.id} game={game} />

@@ -9,231 +9,395 @@ interface GameIllustrationProps {
 export const GameIllustration: React.FC<GameIllustrationProps> = ({
   slug,
   className = '',
+  variant = 'cover',
 }) => {
   switch (slug) {
     case 'nusantara-realm':
       return (
-        <div className={`relative overflow-hidden bg-[#120D24] select-none ${className}`}>
-          {/* Stylized Blocky Nusantara Island Diorama */}
+        <div className={`relative w-full h-full overflow-hidden bg-[#0F0A1E] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
             <defs>
+              <linearGradient id="nr-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#1B0F33" />
+                <stop offset="60%" stopColor="#110A24" />
+                <stop offset="100%" stopColor="#090514" />
+              </linearGradient>
               <linearGradient id="nr-crystal" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#C4B5FD" />
+                <stop offset="0%" stopColor="#E9D5FF" />
                 <stop offset="100%" stopColor="#8B5CF6" />
               </linearGradient>
-              <linearGradient id="nr-temple-front" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#3B2A5E" />
-                <stop offset="100%" stopColor="#201538" />
+              <linearGradient id="nr-rock-top" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3F2D63" />
+                <stop offset="100%" stopColor="#25173E" />
               </linearGradient>
-              <linearGradient id="nr-temple-top" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#5B4588" />
-                <stop offset="100%" stopColor="#43306B" />
+              <linearGradient id="nr-rock-left" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#1F1333" />
+                <stop offset="100%" stopColor="#10081C" />
+              </linearGradient>
+              <linearGradient id="nr-temple-front" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#5B438A" />
+                <stop offset="100%" stopColor="#281A43" />
               </linearGradient>
             </defs>
 
-            {/* Distant Voxel Mountains */}
-            <path d="M 120 180 L 170 120 L 220 180 Z" fill="#241B3B" opacity="0.6" />
-            <path d="M 190 190 L 240 100 L 290 190 Z" fill="#322254" opacity="0.7" />
-            <path d="M 380 200 L 450 130 L 520 200 Z" fill="#251A3E" opacity="0.5" />
+            <rect width="600" height="380" fill="url(#nr-sky)" />
 
-            {/* Celestial Disc */}
-            <circle cx="300" cy="110" r="32" fill="#E9D5FF" opacity="0.9" />
+            {/* Distant Voxel Mountain Silhouettes */}
+            <path d="M 60 220 L 140 140 L 220 220 Z" fill="#1E1235" opacity="0.6" />
+            <path d="M 180 230 L 260 110 L 340 230 Z" fill="#291847" opacity="0.7" />
+            <path d="M 380 240 L 460 150 L 540 240 Z" fill="#201338" opacity="0.5" />
 
-            {/* Isometric Voxel Floating Island Base */}
-            <polygon points="300,160 480,225 300,290 120,225" fill="#362954" stroke="#4C3A75" strokeWidth="1.5" />
-            <polygon points="120,225 300,290 300,340 120,275" fill="#1C142E" stroke="#332454" strokeWidth="1" />
-            <polygon points="300,290 480,225 480,275 300,340" fill="#261A3D" stroke="#332454" strokeWidth="1" />
+            {/* Moon / Energy Core */}
+            <circle cx="300" cy="115" r="38" fill="#DDD6FE" opacity="0.85" />
+            <circle cx="300" cy="115" r="48" fill="#8B5CF6" opacity="0.2" />
 
-            {/* Voxel Tiered Temple */}
-            <polygon points="260,195 340,195 360,210 240,210" fill="url(#nr-temple-top)" />
-            <polygon points="240,210 360,210 360,235 240,235" fill="url(#nr-temple-front)" stroke="#5E438D" strokeWidth="1" />
-            
-            <polygon points="275,170 325,170 340,185 260,185" fill="url(#nr-temple-top)" />
-            <polygon points="260,185 340,185 340,200 260,200" fill="url(#nr-temple-front)" />
+            {/* Floating Voxel Main Island */}
+            <polygon points="300,165 500,235 300,305 100,235" fill="url(#nr-rock-top)" stroke="#533C7E" strokeWidth="1.5" />
+            <polygon points="100,235 300,305 300,365 100,295" fill="url(#nr-rock-left)" stroke="#352254" strokeWidth="1" />
+            <polygon points="300,305 500,235 500,295 300,365" fill="#24153D" stroke="#352254" strokeWidth="1" />
 
-            {/* Gate Towers */}
-            <polygon points="210,130 240,130 245,140 205,140" fill="#7C5BB8" />
-            <rect x="205" y="140" width="40" height="75" fill="url(#nr-temple-front)" stroke="#4A3470" strokeWidth="1" />
-            <rect x="210" y="150" width="12" height="18" fill="#120B20" />
-            <rect x="210" y="175" width="12" height="24" fill="#120B20" />
+            {/* Tiered Nusantara Temple (Candi Bentar Gate & Meru Tower) */}
+            {/* Left Gate Pillar */}
+            <polygon points="215,140 245,140 250,150 210,150" fill="#7C5BB8" />
+            <rect x="210" y="150" width="40" height="70" fill="url(#nr-temple-front)" stroke="#4A3470" strokeWidth="1" />
+            <rect x="215" y="160" width="12" height="18" fill="#140B24" />
+            <rect x="215" y="185" width="12" height="24" fill="#140B24" />
 
-            <polygon points="360,130 390,130 395,140 355,140" fill="#7C5BB8" />
-            <rect x="355" y="140" width="40" height="75" fill="url(#nr-temple-front)" stroke="#4A3470" strokeWidth="1" />
-            <rect x="378" y="150" width="12" height="18" fill="#120B20" />
-            <rect x="378" y="175" width="12" height="24" fill="#120B20" />
+            {/* Right Gate Pillar */}
+            <polygon points="355,140 385,140 390,150 350,150" fill="#7C5BB8" />
+            <rect x="350" y="150" width="40" height="70" fill="url(#nr-temple-front)" stroke="#4A3470" strokeWidth="1" />
+            <rect x="373" y="160" width="12" height="18" fill="#140B24" />
+            <rect x="373" y="185" width="12" height="24" fill="#140B24" />
 
-            {/* Central Mystical Floating Relic */}
-            <polygon points="300,135 306,155 300,180 294,155" fill="url(#nr-crystal)" />
+            {/* Center Tiered Meru Sanctuary Roofs */}
+            <polygon points="265,190 335,190 350,205 250,205" fill="#6B4B9C" stroke="#7E5BB5" strokeWidth="1" />
+            <polygon points="250,205 350,205 350,225 250,225" fill="#3D285E" stroke="#533780" strokeWidth="1" />
 
-            {/* Blocky Character Silhouette */}
-            <rect x="294" y="222" width="12" height="12" fill="#F5F3FF" rx="1" />
-            <polygon points="291,222 309,222 300,216" fill="#C4B5FD" />
-            <rect x="292" y="234" width="16" height="18" fill="#8B5CF6" rx="1" />
-            <line x1="312" y1="236" x2="320" y2="224" stroke="#E9D5FF" strokeWidth="2.5" strokeLinecap="round" />
-            <rect x="293" y="252" width="6" height="14" fill="#3B2A5E" />
-            <rect x="301" y="252" width="6" height="14" fill="#3B2A5E" />
+            <polygon points="275,165 325,165 338,180 262,180" fill="#7C59B2" />
+            <polygon points="262,180 338,180 338,195 262,195" fill="#462E6B" />
 
-            {/* Voxel Blocks */}
-            <rect x="160" y="170" width="8" height="8" fill="#C4B5FD" transform="rotate(45 164 174)" opacity="0.8" />
-            <rect x="440" y="160" width="10" height="10" fill="#8B5CF6" transform="rotate(30 445 165)" opacity="0.85" />
-            <rect x="380" y="270" width="6" height="6" fill="#E9D5FF" transform="rotate(20 383 273)" opacity="0.9" />
+            {/* Central Mystical Floating Keris / Relic */}
+            <g transform="translate(300, 140)">
+              <polygon points="0,-22 8,-4 0,16 -8,-4" fill="url(#nr-crystal)" stroke="#FFFFFF" strokeWidth="1" />
+              <circle cx="0" cy="18" r="3" fill="#EDE9FE" />
+            </g>
+
+            {/* Blocky Indonesian Hero Avatar Silhouette */}
+            <g transform="translate(300, 240)">
+              <ellipse cx="0" cy="22" rx="18" ry="6" fill="#06030D" opacity="0.7" />
+              {/* Legs */}
+              <rect x="-8" y="2" width="6" height="18" fill="#25163D" />
+              <rect x="2" y="2" width="6" height="18" fill="#2E1C4A" />
+              {/* Torso */}
+              <polygon points="-12,-28 12,-28 14,2 -12,2" fill="#8B5CF6" stroke="#DDD6FE" strokeWidth="1" />
+              {/* Glowing blade in hand */}
+              <line x1="16" y1="-10" x2="30" y2="-28" stroke="#E9D5FF" strokeWidth="3" strokeLinecap="round" />
+              {/* Head & Blangkon Headdress */}
+              <rect x="-9" y="-48" width="18" height="20" fill="#F5F3FF" rx="1.5" />
+              <polygon points="-11,-48 11,-48 8,-56 -8,-56" fill="#1C102E" />
+              <rect x="-10" y="-48" width="20" height="4" fill="#1C102E" />
+            </g>
+
+            {/* Floating Energy Shards */}
+            <rect x="150" y="180" width="8" height="8" fill="#C4B5FD" transform="rotate(45 154 184)" opacity="0.8" />
+            <rect x="450" y="170" width="10" height="10" fill="#8B5CF6" transform="rotate(30 455 175)" opacity="0.85" />
+            <rect x="380" y="280" width="6" height="6" fill="#E9D5FF" transform="rotate(20 383 283)" opacity="0.9" />
           </svg>
         </div>
       );
 
     case 'skyblock-obby-mayhem':
       return (
-        <div className={`relative overflow-hidden bg-[#0F0C20] select-none ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-[#0C081A] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
             <defs>
-              <linearGradient id="neon-block" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#A78BFA" />
-                <stop offset="100%" stopColor="#6D28D9" />
+              <linearGradient id="obby-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#220D45" />
+                <stop offset="50%" stopColor="#15082C" />
+                <stop offset="100%" stopColor="#0B0417" />
               </linearGradient>
-              <linearGradient id="cyan-boost" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#67E8F9" />
-                <stop offset="100%" stopColor="#0284C7" />
+              <linearGradient id="neon-block" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" />
+                <stop offset="100%" stopColor="#7E22CE" />
               </linearGradient>
             </defs>
 
-            {/* Distant Voxel Clouds */}
-            <rect x="60" y="80" width="90" height="24" fill="#241B3B" rx="2" />
-            <rect x="90" y="66" width="50" height="20" fill="#2F234D" rx="2" />
-            <rect x="420" y="110" width="110" height="28" fill="#241B3B" rx="2" />
+            <rect width="600" height="380" fill="url(#obby-sky)" />
 
-            {/* Stepping Obby Blocks */}
-            <polygon points="80,280 180,240 240,270 140,310" fill="#362954" stroke="#8B5CF6" strokeWidth="2" />
-            <polygon points="80,280 140,310 140,335 80,305" fill="#1D1533" />
-            <polygon points="140,310 240,270 240,295 140,335" fill="#281E43" />
+            {/* Laser Speedrun Grids in Sky */}
+            <line x1="0" y1="120" x2="600" y2="120" stroke="#8B5CF6" strokeWidth="0.8" strokeDasharray="12 12" opacity="0.4" />
+            <line x1="0" y1="260" x2="600" y2="260" stroke="#8B5CF6" strokeWidth="0.8" strokeDasharray="12 12" opacity="0.4" />
 
-            {/* Boost Block */}
-            <polygon points="210,210 290,180 340,205 260,235" fill="url(#cyan-boost)" stroke="#BAE6FD" strokeWidth="1.5" />
-            <polygon points="210,210 260,235 260,250 210,225" fill="#0369A1" />
-            <polygon points="260,235 340,205 340,220 260,250" fill="#075985" />
-            <polygon points="275,200 285,188 295,200 288,200 288,212 282,212 282,200" fill="#FFFFFF" />
+            {/* Floating Stepping Blocks Obstacle Course */}
+            {/* Platform 1 */}
+            <polygon points="120,270 190,240 260,270 190,300" fill="#4C1D95" stroke="#A78BFA" strokeWidth="1.5" />
+            <polygon points="120,270 190,300 190,325 120,295" fill="#2E1065" />
+            <polygon points="190,300 260,270 260,295 190,325" fill="#3B0764" />
 
-            {/* Hazard Bar */}
-            <polygon points="320,160 380,135 430,155 370,180" fill="url(#neon-block)" stroke="#C4B5FD" strokeWidth="1.5" />
-            <polygon points="320,160 370,180 370,195 320,175" fill="#4C1D95" />
-            <polygon points="370,180 430,155 430,170 370,195" fill="#5B21B6" />
-            <line x1="280" y1="140" x2="470" y2="175" stroke="#F43F5E" strokeWidth="3" strokeDasharray="8 4" strokeLinecap="round" />
+            {/* Platform 2 (Higher) */}
+            <polygon points="230,200 290,170 350,200 290,230" fill="url(#neon-block)" stroke="#F472B6" strokeWidth="1.5" />
+            <polygon points="230,200 290,230 290,250 230,220" fill="#701A75" />
+            <polygon points="290,230 350,200 350,220 290,250" fill="#831843" />
 
-            {/* Apex Goal */}
-            <polygon points="410,105 470,80 520,100 460,125" fill="#8B5CF6" stroke="#DDD6FE" strokeWidth="2" />
-            <polygon points="410,105 460,125 460,140 410,120" fill="#3B1C72" />
-            <polygon points="460,125 520,100 520,115 460,140" fill="#4C228E" />
-            <line x1="465" y1="70" x2="465" y2="105" stroke="#F5F3FF" strokeWidth="2" />
-            <polygon points="465,70 500,80 465,90" fill="#FBBF24" />
+            {/* Platform 3 (Apex Goal) */}
+            <polygon points="360,140 430,110 500,140 430,170" fill="#6366F1" stroke="#A5B4FC" strokeWidth="1.5" />
+            <polygon points="360,140 430,170 430,195 360,165" fill="#312E81" />
+            <polygon points="430,170 500,140 500,165 430,195" fill="#3730A3" />
 
-            {/* Character in jump */}
-            <rect x="270" y="125" width="14" height="14" fill="#F5F3FF" rx="1.5" />
-            <rect x="268" y="140" width="18" height="20" fill="#8B5CF6" rx="2" />
-            <rect x="259" y="132" width="7" height="16" fill="#A78BFA" transform="rotate(-30 259 132)" />
-            <rect x="288" y="132" width="7" height="16" fill="#A78BFA" transform="rotate(30 288 132)" />
-            <rect x="269" y="160" width="7" height="10" fill="#312E81" />
-            <rect x="279" y="160" width="7" height="10" fill="#312E81" />
+            {/* Trampoline Boost Rings */}
+            <ellipse cx="290" cy="200" rx="36" ry="16" fill="none" stroke="#F472B6" strokeWidth="2" strokeDasharray="6 4" />
+            <ellipse cx="430" cy="140" rx="42" ry="18" fill="none" stroke="#38BDF8" strokeWidth="2" strokeDasharray="6 4" />
+
+            {/* Speedrunner Avatar Mid-Air Jump */}
+            <g transform="translate(290, 110)">
+              {/* Motion trail lines */}
+              <line x1="-30" y1="40" x2="-10" y2="20" stroke="#F472B6" strokeWidth="2" strokeDasharray="4 4" opacity="0.8" />
+              <line x1="-40" y1="50" x2="-15" y2="30" stroke="#A78BFA" strokeWidth="2" strokeDasharray="4 4" opacity="0.8" />
+
+              {/* Legs in leap */}
+              <rect x="-14" y="8" width="7" height="18" fill="#1E1B4B" transform="rotate(-35 -10 10)" />
+              <rect x="2" y="8" width="7" height="18" fill="#312E81" transform="rotate(25 5 10)" />
+              {/* Torso */}
+              <polygon points="-12,-22 12,-22 14,8 -12,8" fill="#8B5CF6" stroke="#DDD6FE" strokeWidth="1" />
+              {/* Head with Visor */}
+              <rect x="-9" y="-42" width="18" height="20" fill="#F8FAFC" rx="2" />
+              <rect x="-9" y="-36" width="18" height="7" fill="#06B6D4" />
+              <line x1="-6" y1="-33" x2="3" y2="-33" stroke="#FFFFFF" strokeWidth="1.5" />
+            </g>
+
+            {/* Speedrun HUD Counter Overlay in scene */}
+            <g transform="translate(40, 45)">
+              <rect x="0" y="0" width="110" height="32" fill="#171321" rx="6" stroke="#332A45" strokeWidth="1" />
+              <text x="12" y="21" fill="#C4B5FD" fontSize="11" fontFamily="monospace" fontWeight="bold">00:42.89s</text>
+            </g>
           </svg>
         </div>
       );
 
     case 'mega-tycoon-cyber-nusantara':
       return (
-        <div className={`relative overflow-hidden bg-[#090714] select-none ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-[#0A0714] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
-            {/* Voxel Skyscraper */}
-            <polygon points="140,80 180,60 220,80 180,100" fill="#8B5CF6" stroke="#C4B5FD" strokeWidth="1" />
-            <polygon points="140,80 180,100 180,260 140,240" fill="#20153B" stroke="#332454" strokeWidth="1" />
-            <polygon points="180,100 220,80 220,240 180,260" fill="#2A1B4E" stroke="#332454" strokeWidth="1" />
-            {[0, 1, 2, 3, 4].map((row) => (
-              <polygon key={`win-l-${row}`} points={`150,${110 + row * 26} 170,${120 + row * 26} 170,${130 + row * 26} 150,${120 + row * 26}`} fill="#34D399" opacity="0.8" />
-            ))}
-            {[0, 1, 2, 3, 4].map((row) => (
-              <polygon key={`win-r-${row}`} points={`190,${120 + row * 26} 210,${110 + row * 26} 210,${120 + row * 26} 190,${130 + row * 26}`} fill="#8B5CF6" opacity="0.9" />
-            ))}
+            <defs>
+              <linearGradient id="cyber-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#190B38" />
+                <stop offset="60%" stopColor="#0E0521" />
+                <stop offset="100%" stopColor="#05020D" />
+              </linearGradient>
+              <linearGradient id="neon-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#06B6D4" />
+                <stop offset="100%" stopColor="#22D3EE" />
+              </linearGradient>
+            </defs>
 
-            {/* Central Factory Hub */}
-            <polygon points="260,160 380,100 480,150 360,210" fill="#39285E" stroke="#7C5BB8" strokeWidth="1.5" />
-            <polygon points="260,160 360,210 360,280 260,230" fill="#1C142E" />
-            <polygon points="360,210 480,150 480,220 360,280" fill="#281D42" />
+            <rect width="600" height="380" fill="url(#cyber-sky)" />
 
-            {/* Automated Conveyor */}
-            <path d="M 220,230 L 300,270 L 420,210 L 520,260" fill="none" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" opacity="0.9" />
+            {/* Grid Floor of Floating Cyber Harbor */}
+            <polygon points="300,190 530,260 300,330 70,260" fill="#130D26" stroke="#332454" strokeWidth="1.2" />
 
-            {/* Voxel Drone */}
-            <rect x="330" y="80" width="30" height="16" fill="#F5F3FF" rx="2" />
-            <line x1="315" y1="88" x2="375" y2="88" stroke="#8B5CF6" strokeWidth="2" />
-            <circle cx="315" cy="88" r="4" fill="#38BDF8" />
-            <circle cx="375" cy="88" r="4" fill="#38BDF8" />
-            <rect x="337" y="100" width="16" height="14" fill="#10B981" rx="1" />
+            {/* Futuristic Vertical Megatowers */}
+            {/* Tower Left */}
+            <g transform="translate(130, 110)">
+              <polygon points="40,0 80,15 40,30 0,15" fill="#4338CA" stroke="#818CF8" strokeWidth="1" />
+              <polygon points="0,15 40,30 40,150 0,135" fill="#1E1B4B" stroke="#312E81" strokeWidth="1" />
+              <polygon points="40,30 80,15 80,135 40,150" fill="#312E81" stroke="#3730A3" strokeWidth="1" />
+              {/* Window grid */}
+              <line x1="8" y1="35" x2="32" y2="44" stroke="#06B6D4" strokeWidth="1.5" />
+              <line x1="8" y1="60" x2="32" y2="69" stroke="#06B6D4" strokeWidth="1.5" />
+              <line x1="8" y1="85" x2="32" y2="94" stroke="#06B6D4" strokeWidth="1.5" />
+              <line x1="8" y1="110" x2="32" y2="119" stroke="#06B6D4" strokeWidth="1.5" />
+            </g>
+
+            {/* Central Skybridge Skyscraper */}
+            <g transform="translate(250, 70)">
+              <polygon points="50,0 100,20 50,40 0,20" fill="#7C3AED" stroke="#C4B5FD" strokeWidth="1" />
+              <polygon points="0,20 50,40 50,220 0,200" fill="#2E1065" stroke="#581C87" strokeWidth="1" />
+              <polygon points="50,40 100,20 100,200 50,220" fill="#3B0764" stroke="#6B21A8" strokeWidth="1" />
+              {/* Holographic Neon Billboard */}
+              <polygon points="10,60 40,72 40,105 10,93" fill="url(#neon-cyan)" opacity="0.85" />
+              {/* Antenna Spike */}
+              <line x1="50" y1="0" x2="50" y2="-30" stroke="#E0E7FF" strokeWidth="2" />
+              <circle cx="50" cy="-30" r="3" fill="#EC4899" />
+            </g>
+
+            {/* Conveyor Belt System */}
+            <polygon points="170,250 370,205 390,215 190,260" fill="#1F2937" stroke="#4B5563" strokeWidth="1" />
+            {/* Cargo Voxel Crates on Belt */}
+            <rect x="230" y="235" width="14" height="12" fill="#F59E0B" stroke="#FDE68A" strokeWidth="1" />
+            <rect x="300" y="218" width="14" height="12" fill="#10B981" stroke="#A7F3D0" strokeWidth="1" />
+
+            {/* Flying Cargo Drone */}
+            <g transform="translate(420, 140)">
+              <rect x="0" y="0" width="30" height="14" fill="#1F1635" rx="3" stroke="#8B5CF6" strokeWidth="1" />
+              <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#C4B5FD" strokeWidth="2" />
+              <line x1="22" y1="-4" x2="38" y2="-4" stroke="#C4B5FD" strokeWidth="2" />
+              {/* Suspended battery box */}
+              <line x1="8" y1="14" x2="8" y2="24" stroke="#6B7280" />
+              <line x1="22" y1="14" x2="22" y2="24" stroke="#6B7280" />
+              <rect x="6" y="24" width="18" height="14" fill="#06B6D4" rx="2" />
+            </g>
           </svg>
         </div>
       );
 
     case 'ghost-hunter-kampung-misteri':
       return (
-        <div className={`relative overflow-hidden bg-[#07060E] select-none ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-[#07050C] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
-            <path d="M 0,180 Q 150,140 300,180 T 600,180 L 600,360 L 0,360 Z" fill="#141026" opacity="0.7" />
-            <path d="M 0,220 Q 200,260 400,210 T 600,240 L 600,360 L 0,360 Z" fill="#0C0A17" opacity="0.9" />
+            <defs>
+              <linearGradient id="mist-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#120A20" />
+                <stop offset="60%" stopColor="#0B0614" />
+                <stop offset="100%" stopColor="#040207" />
+              </linearGradient>
+              <linearGradient id="lantern-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FEF08A" />
+                <stop offset="100%" stopColor="#F59E0B" />
+              </linearGradient>
+            </defs>
 
-            {/* Banyan Tree */}
-            <rect x="100" y="140" width="28" height="140" fill="#181324" />
-            <rect x="80" y="80" width="70" height="70" fill="#231B36" rx="4" />
-            <rect x="60" y="100" width="110" height="40" fill="#1C152B" rx="4" />
+            <rect width="600" height="380" fill="url(#mist-sky)" />
 
-            {/* Stilt House */}
-            <polygon points="340,110 440,70 540,110 440,140" fill="#382A52" stroke="#4C3A75" strokeWidth="1.5" />
-            <polygon points="340,110 440,140 440,210 340,180" fill="#1E162E" stroke="#332454" strokeWidth="1" />
-            <polygon points="440,140 540,110 540,180 440,210" fill="#251B38" stroke="#332454" strokeWidth="1" />
-            <rect x="360" y="185" width="8" height="60" fill="#120D1D" />
-            <rect x="420" y="200" width="8" height="55" fill="#120D1D" />
-            <rect x="510" y="180" width="8" height="65" fill="#120D1D" />
+            {/* Fog Layers */}
+            <ellipse cx="300" cy="240" rx="260" ry="80" fill="#2E1B4E" opacity="0.25" />
+            <ellipse cx="300" cy="270" rx="300" ry="70" fill="#1E1235" opacity="0.4" />
 
-            {/* Investigator Silhouette */}
-            <rect x="215" y="240" width="12" height="12" fill="#E2E8F0" rx="1" />
-            <rect x="213" y="252" width="16" height="18" fill="#475569" rx="1" />
-            <rect x="229" y="256" width="10" height="5" fill="#FBBF24" />
-            <rect x="214" y="270" width="6" height="14" fill="#1E293B" />
-            <rect x="222" y="270" width="6" height="14" fill="#1E293B" />
+            {/* Ancient Voxel Banyan Tree */}
+            <g transform="translate(380, 80)">
+              {/* Roots / Trunk */}
+              <polygon points="50,180 70,180 65,80 45,80" fill="#1C132B" stroke="#2D1F45" strokeWidth="1" />
+              <polygon points="35,180 50,180 55,80 35,80" fill="#140D21" />
+              {/* Dense Voxel Leaf Canopies */}
+              <rect x="-10" y="30" width="70" height="40" fill="#281A43" rx="3" stroke="#3D2966" strokeWidth="1" />
+              <rect x="25" y="10" width="80" height="45" fill="#36225B" rx="3" stroke="#4C3080" strokeWidth="1" />
+              <rect x="10" y="-15" width="60" height="40" fill="#442B73" rx="3" stroke="#5D3B9E" strokeWidth="1" />
+            </g>
+
+            {/* Abandoned Javanese/Sundanese Stilt House in Voxel */}
+            <g transform="translate(140, 130)">
+              {/* Stilts */}
+              <rect x="20" y="110" width="8" height="50" fill="#150E24" />
+              <rect x="65" y="110" width="8" height="50" fill="#150E24" />
+              <rect x="110" y="110" width="8" height="50" fill="#150E24" />
+              {/* House Deck & Walls */}
+              <polygon points="0,110 140,110 120,60 20,60" fill="#271A3F" stroke="#3D2863" strokeWidth="1" />
+              {/* Traditional Joglo Roof Tier */}
+              <polygon points="-10,60 150,60 110,20 30,20" fill="#462C70" stroke="#603D99" strokeWidth="1" />
+              <polygon points="20,20 120,20 90,-5 50,-5" fill="#58378C" stroke="#7549BA" strokeWidth="1" />
+              {/* Creepy dim window */}
+              <rect x="45" y="72" width="22" height="26" fill="#FDE047" opacity="0.25" />
+            </g>
+
+            {/* Flashlight Beam Cutting Through Darkness */}
+            <polygon points="120,270 340,210 370,300" fill="#DDD6FE" opacity="0.12" />
+
+            {/* Investigator Silhouette Holding Lantern */}
+            <g transform="translate(130, 255)">
+              <rect x="-8" y="2" width="6" height="18" fill="#1F1635" />
+              <rect x="2" y="2" width="6" height="18" fill="#281C45" />
+              <polygon points="-12,-28 12,-28 14,2 -12,2" fill="#581C87" stroke="#A855F7" strokeWidth="1" />
+              {/* Head with flashlight headlamp */}
+              <rect x="-8" y="-46" width="16" height="18" fill="#F5F3FF" rx="1.5" />
+              <rect x="-4" y="-44" width="8" height="4" fill="#38BDF8" />
+              {/* Handheld Lantern with warm glow */}
+              <line x1="14" y1="-12" x2="22" y2="-4" stroke="#94A3B8" strokeWidth="2" />
+              <rect x="18" y="-4" width="10" height="14" fill="url(#lantern-light)" rx="1" />
+              <circle cx="23" cy="3" r="14" fill="#F59E0B" opacity="0.25" />
+            </g>
           </svg>
         </div>
       );
 
     case 'gravity-racer-zero-voxel':
       return (
-        <div className={`relative overflow-hidden bg-[#0B0818] select-none ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-[#0A0617] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
-            <ellipse cx="300" cy="180" rx="260" ry="90" fill="none" stroke="#332454" strokeWidth="20" transform="rotate(-15 300 180)" />
-            <ellipse cx="300" cy="180" rx="260" ry="90" fill="none" stroke="#8B5CF6" strokeWidth="3" strokeDasharray="16 8" transform="rotate(-15 300 180)" />
+            <defs>
+              <linearGradient id="racer-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#250F4C" />
+                <stop offset="60%" stopColor="#14072E" />
+                <stop offset="100%" stopColor="#080214" />
+              </linearGradient>
+              <linearGradient id="plasma-trail" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#A855F7" />
+                <stop offset="100%" stopColor="#EC4899" />
+              </linearGradient>
+            </defs>
 
-            {/* Voxel Racer Car */}
-            <g transform="translate(240, 180) rotate(-10)">
-              <polygon points="40,20 140,0 160,25 60,45" fill="#8B5CF6" stroke="#DDD6FE" strokeWidth="1.5" />
-              <polygon points="40,20 60,45 40,65 20,40" fill="#4C1D95" />
-              <polygon points="60,45 160,25 140,55 40,65" fill="#6D28D9" />
-              <polygon points="80,15 120,5 130,22 90,30" fill="#38BDF8" opacity="0.9" stroke="#E0F2FE" strokeWidth="1" />
-              <rect x="35" y="45" width="20" height="15" fill="#1E1B4B" rx="2" />
-              <rect x="125" y="30" width="22" height="15" fill="#1E1B4B" rx="2" />
+            <rect width="600" height="380" fill="url(#racer-sky)" />
+
+            {/* 360-Degree Curved Magnetic Track */}
+            <path
+              d="M -20 280 Q 200 120 400 240 T 620 180"
+              fill="none"
+              stroke="#2E1B52"
+              strokeWidth="56"
+            />
+            <path
+              d="M -20 280 Q 200 120 400 240 T 620 180"
+              fill="none"
+              stroke="#8B5CF6"
+              strokeWidth="4"
+              strokeDasharray="16 16"
+            />
+            {/* Edge guide rails */}
+            <path
+              d="M -20 252 Q 200 92 400 212 T 620 152"
+              fill="none"
+              stroke="#06B6D4"
+              strokeWidth="3"
+            />
+
+            {/* Plasma Boost Speed Trail */}
+            <path
+              d="M 120 220 Q 220 190 280 205"
+              fill="none"
+              stroke="url(#plasma-trail)"
+              strokeWidth="10"
+              strokeLinecap="round"
+              opacity="0.8"
+            />
+
+            {/* Futuristic Voxel Hovercraft Racer */}
+            <g transform="translate(290, 195) rotate(14)">
+              {/* Aerodynamic Angular Voxel Chassis */}
+              <polygon points="-40,-12 30,-14 55,0 30,14 -40,12 -50,0" fill="#7C3AED" stroke="#E9D5FF" strokeWidth="1.5" />
+              {/* Cockpit Canopy */}
+              <polygon points="-15,-8 15,-8 28,0 15,8 -15,8" fill="#38BDF8" stroke="#FFFFFF" strokeWidth="1" />
+              {/* Dual Plasma Thrusters */}
+              <rect x="-56" y="-14" width="14" height="8" fill="#1E1B4B" rx="1" />
+              <rect x="-56" y="6" width="14" height="8" fill="#1E1B4B" rx="1" />
+              <polygon points="-56,-14 -75,-10 -56,-6" fill="#F43F5E" />
+              <polygon points="-56,6 -75,10 -56,14" fill="#F43F5E" />
+              {/* Rear Spoiler */}
+              <polygon points="-48,-20 -35,-20 -38,-14 -51,-14" fill="#C4B5FD" />
+              <polygon points="-48,20 -35,20 -38,14 -51,14" fill="#C4B5FD" />
+            </g>
+
+            {/* Speed Gauge & Drift Marker */}
+            <g transform="translate(450, 60)">
+              <rect x="0" y="0" width="110" height="36" fill="#171321" rx="6" stroke="#332A45" strokeWidth="1" />
+              <text x="12" y="23" fill="#38BDF8" fontSize="13" fontFamily="monospace" fontWeight="bold">584 KM/H</text>
             </g>
           </svg>
         </div>
@@ -242,34 +406,58 @@ export const GameIllustration: React.FC<GameIllustrationProps> = ({
     case 'block-arena-champions':
     default:
       return (
-        <div className={`relative overflow-hidden bg-[#110C24] select-none ${className}`}>
+        <div className={`relative w-full h-full overflow-hidden bg-[#0C071C] select-none ${className}`}>
           <svg
-            viewBox="0 0 600 360"
-            className="relative w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
+            viewBox="0 0 600 380"
+            className="w-full h-full object-cover"
             preserveAspectRatio="xMidYMid slice"
           >
-            {/* Arena Pillars */}
-            {[-1, 0, 1].map((offset) => {
-              const cx = 300 + offset * 140;
-              return (
-                <rect key={`p-${offset}`} x={cx - 15} y="110" width="30" height="130" fill="#23193D" stroke="#3D2B66" strokeWidth="1" />
-              );
-            })}
+            <defs>
+              <linearGradient id="arena-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#250F46" />
+                <stop offset="60%" stopColor="#14082B" />
+                <stop offset="100%" stopColor="#080214" />
+              </linearGradient>
+            </defs>
 
-            {/* Arena Platform */}
-            <polygon points="300,190 520,250 300,310 80,250" fill="#2E204E" stroke="#8B5CF6" strokeWidth="2" />
-            <polygon points="80,250 300,310 300,340 80,280" fill="#181029" />
-            <polygon points="300,310 520,250 520,280 300,340" fill="#211638" />
+            <rect width="600" height="380" fill="url(#arena-sky)" />
 
-            {/* Left Hero */}
-            <rect x="220" y="215" width="14" height="14" fill="#F1F5F9" rx="1.5" />
-            <rect x="216" y="229" width="22" height="24" fill="#7C3AED" rx="2" />
-            <line x1="238" y1="235" x2="260" y2="210" stroke="#E2E8F0" strokeWidth="3" />
-            <rect x="252" y="198" width="22" height="18" fill="#F59E0B" rx="2" stroke="#FEF3C7" strokeWidth="1" />
+            {/* Colosseum Voxel Arena Ground */}
+            <polygon points="300,180 520,250 300,320 80,250" fill="#2E1C4F" stroke="#52358A" strokeWidth="1.5" />
+            {/* Arena boundary pillars */}
+            <rect x="130" y="190" width="16" height="45" fill="#472A7A" stroke="#7044C0" strokeWidth="1" />
+            <rect x="450" y="190" width="16" height="45" fill="#472A7A" stroke="#7044C0" strokeWidth="1" />
 
-            {/* Right Hero */}
-            <rect x="360" y="215" width="14" height="14" fill="#F1F5F9" rx="1.5" />
-            <rect x="356" y="229" width="22" height="24" fill="#2563EB" rx="2" />
+            {/* Destructible Voxel Wall (Exploding in impact) */}
+            <g transform="translate(300, 200)">
+              {/* Flying shattered debris cubes */}
+              <rect x="-35" y="-60" width="12" height="12" fill="#C4B5FD" transform="rotate(35)" stroke="#FFFFFF" strokeWidth="1" />
+              <rect x="40" y="-70" width="14" height="14" fill="#8B5CF6" transform="rotate(15)" stroke="#DDD6FE" strokeWidth="1" />
+              <rect x="-60" y="-30" width="10" height="10" fill="#6D28D9" transform="rotate(-20)" />
+              <rect x="55" y="-20" width="12" height="12" fill="#A855F7" transform="rotate(40)" />
+
+              {/* Energy Shockwave Ring */}
+              <ellipse cx="0" cy="40" rx="90" ry="24" fill="none" stroke="#C4B5FD" strokeWidth="2.5" strokeDasharray="8 6" opacity="0.8" />
+            </g>
+
+            {/* Hammer Titan Champion Avatar */}
+            <g transform="translate(300, 220)">
+              <ellipse cx="0" cy="24" rx="24" ry="8" fill="#06020D" opacity="0.7" />
+              {/* Heavy Legs */}
+              <rect x="-14" y="2" width="10" height="22" fill="#25163D" stroke="#4C2D7E" strokeWidth="1" />
+              <rect x="4" y="2" width="10" height="22" fill="#2E1C4A" stroke="#4C2D7E" strokeWidth="1" />
+              {/* Heavy Armor Torso */}
+              <polygon points="-20,-34 20,-34 22,2 -20,2" fill="#8B5CF6" stroke="#DDD6FE" strokeWidth="1.5" />
+              {/* Giant Voxel War Hammer Slammed to ground */}
+              <rect x="-2" y="-55" width="6" height="70" fill="#64748B" stroke="#CBD5E1" strokeWidth="1" />
+              <rect x="-24" y="6" width="50" height="22" fill="#3B1C6B" stroke="#C084FC" strokeWidth="2" rx="2" />
+              {/* Champion Helmet with Horns */}
+              <rect x="-11" y="-56" width="22" height="22" fill="#F1F5F9" rx="2" stroke="#94A3B8" strokeWidth="1.2" />
+              <polygon points="-16,-56 -10,-56 -14,-68" fill="#A855F7" />
+              <polygon points="10,-56 16,-56 14,-68" fill="#A855F7" />
+              {/* Glowing eye slit */}
+              <rect x="-7" y="-46" width="14" height="4" fill="#06B6D4" />
+            </g>
           </svg>
         </div>
       );

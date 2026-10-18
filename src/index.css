@@ -1,11 +1,17 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
-  }
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --color-studio-bg: #09090F;
+  --color-studio-surface: #171321;
+  --color-studio-card: #201A2D;
+  --color-studio-accent: #8B5CF6;
+  --color-studio-lavender: #C4B5FD;
+  --color-studio-border: #332A45;
+}
 
+@layer base {
   body {
     font-family: var(--font-sans);
     background-color: #09090F;

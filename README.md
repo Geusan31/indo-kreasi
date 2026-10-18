@@ -1,87 +1,86 @@
-# PT Indo Kreasi — Game Development Studio Official Website
+# PT Indo Kreasi — Dynamic Game Development Website & Admin CMS
 
-Website profil resmi dan showcase portofolio game interaktif **PT Indo Kreasi** (PT Indo Kreasi Digital Games). Dibangun dengan estetika *blocky* dan *voxel 3D* virtual world modern, palet warna hitam dan ungu gelap (*deep dark purple & electric violet*), serta arsitektur frontend murni tanpa dependensi backend/database.
+A complete, production-ready dynamic company profile, game portfolio showcase, and CMS-style admin dashboard for **PT Indo Kreasi** (PT Indo Kreasi Digital Games).
 
----
-
-## 🎮 Halaman & Fitur Utama
-
-1. **Beranda (`/`)**
-   - Hero section interaktif dengan visual diorama voxel 3D (`VoxelHeroScene`) dan pemilih bioma (*Crystal*, *Neon*, *Cyber*).
-   - Sorotan portofolio game unggulan (*Featured Games*).
-   - Nilai dan filosofi studio (*Studio Values*).
-   - Tinjauan kapabilitas layanan (*Services Overview*).
-   - 5 tahapan alur kerja produksi (*Creative Workflow*).
-   - Banner ajakan kolaborasi (*Collaboration CTA*).
-
-2. **Portofolio Game (`/games`)**
-   - Pencarian judul dan mekanik game secara *real-time* berbasis data lokal.
-   - Filter kategori interaktif (*Action & RPG*, *Platformer & Obby*, *Simulator & Tycoon*, *Mystery & Survival*, *Racing & Arcade*, *Action & Arena*).
-   - *Empty state* ramah pengguna dengan tombol reset filter.
-
-3. **Detail Game (`/games/:slug`)**
-   - Pembacaan data dinamis berdasarkan *slug* game lokal.
-   - Visualisasi ilustrasi konsep resolusi tinggi berbasis SVG murni (tidak bergantung pada tautan gambar eksternal yang rentan patah).
-   - Fitur utama, status platform, spesifikasi teknis, dan galeri sudut pandang.
-   - Penanganan rute *slug* tidak valid dengan halaman *Not Found* internal yang anggun.
-   - Rekomendasi game lain untuk dieksplorasi.
-
-4. **Tentang Kami (`/about`)**
-   - Profil dan identitas PT Indo Kreasi.
-   - Visi dan misi perusahaan.
-   - 4 nilai inti studio (*Kreativitas Berakar*, *Presisi Mekanik*, *Estetika Voxel*, *Transparansi*).
-   - Lembar fakta studio yang transparan dan dapat dikonfigurasi.
-
-5. **Layanan (`/services`)**
-   - 5 layanan studio terperinci: *Full-Cycle Game Development*, *Game Design & Prototyping*, *3D Voxel Assets & Environment*, *Game UI/UX*, dan *Virtual World Experiences*.
-   - Rincian *deliverables*, teknologi pendukung, dan alur kerja.
-   - Tautan langsung ke formulir kontak dengan pre-filled subjek.
-
-6. **Kontak (`/contact`)**
-   - Validasi formulir sisi klien (*client-side validation*) dengan umpan balik pesan galat *inline*.
-   - Salin email satu-klik (*Copy to Clipboard*) dengan indikator status.
-   - Tautan `mailto:` langsung untuk membuka klien email pengguna dengan parameter pesan terisi.
-   - Pemberitahuan jujur bahwa formulir beroperasi sebagai demonstrasi frontend tanpa pengiriman ke server pihak ketiga.
-
-7. **Halaman 404 (`*`)**
-   - Halaman khusus bertema ruang hampa (*void coordinates*) dengan tombol kembali ke beranda.
+Built with **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **Supabase** (PostgreSQL Database, Authentication, Row Level Security, and Storage).
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 🚀 Fitur Utama
 
-- **React 19** + **Vite**: Framework frontend performa tinggi.
-- **TypeScript**: Tipe data aman untuk game, layanan, dan konfigurasi.
-- **React Router DOM 7**: Perutean sisi klien (*client-side routing*).
-- **Tailwind CSS v4**: Desain modular dengan token warna kustom.
-- **Motion**: Animasi halus dengan dukungan preferensi aksesibilitas `prefers-reduced-motion`.
-- **Lucide React**: Ikon antarmuka modern.
+### 1. Website Publik (Dinamis dari Supabase)
+- **Beranda (`/`)**: Hero section dinamis, karya game unggulan, preview profil studio, ringkasan layanan, dan banner kemitraan — seluruh konten dapat disunting melalui Admin CMS.
+- **Portofolio Game (`/games`)**: Menampilkan game berstatus *published* dengan fitur pencarian real-time dan filter kategori.
+- **Detail Game (`/games/:slug`)**: Menampilkan cover, banner, sinopsis, platform, tanggal rilis, dan galeri konsep, serta penanganan 404 jika slug tidak ditemukan.
+- **Tentang Kami (`/about`)**: Profil resmi studio, visi & misi, nilai-nilai pengembangan, dan lembar fakta dinamis dari tabel `company_info`.
+- **Layanan (`/services`)**: Menampilkan daftar kapabilitas layanan aktif (*is_active = true*) dengan opsi pengajuan penawaran.
+- **Kontak (`/contact`)**: Formulir pengiriman pesan yang langsung menyimpan data ke tabel `inquiries` Supabase.
+
+### 2. Dashboard Administrator CMS (`/admin`)
+- **Login Admin (`/admin/login`)**: Autentikasi aman berbasis Supabase Auth (`supabase.auth.signInWithPassword`), dilengkapi mode pengujian instan.
+- **Ringkasan Statistik (`/admin`)**: Metrik real-time jumlah game, draft, layanan, pesan masuk baru, dan tindakan cepat.
+- **CRUD Games (`/admin/games`)**: Tambah, sunting, arsipkan, atau hapus proyek game; kelola slug otomatis, galeri JSONB, dan unggah gambar ke Supabase Storage.
+- **CRUD Layanan (`/admin/services`)**: Kelola nama layanan, slug, ikon, deskripsi, urutan tampil, dan status aktif.
+- **CMS Homepage (`/admin/homepage`)**: Atur judul, sub-judul, deskripsi, teks tombol CTA, gambar, dan visibilitas setiap seksi beranda.
+- **CMS Informasi Perusahaan (`/admin/company`)**: Sunting nama studio, tagline, visi, misi, kontak email, telepon, alamat, dan tautan sosial media.
+- **Manajemen Pesan Masuk (`/admin/inquiries`)**: Baca detail pesan dari publik, ubah status (read, replied, archived), dan balas langsung melalui email.
+- **Pustaka Media (`/admin/media`)**: Unggah gambar (JPG, PNG, WEBP, SVG hingga 10MB) ke bucket Supabase Storage `website-assets`, salin URL publik, dan kelola aset.
+- **Profil Admin (`/admin/profile`)**: Kelola nama tampilan dan avatar admin.
+- **Pengaturan & Migrasi (`/admin/settings`)**: Uji koneksi Supabase secara langsung, salin skrip SQL migrasi, dan opsi reset data lokal.
 
 ---
 
-## 🚀 Menjalankan Proyek Secara Lokal
+## 🛠️ Panduan Integrasi Supabase
 
-### 1. Instalasi Dependensi
+### 1. Buat Proyek Supabase
+Buka [Supabase Dashboard](https://supabase.com/dashboard) dan buat proyek baru.
+
+### 2. Jalankan Skrip Migrasi SQL
+Masuk ke menu **SQL Editor** di Supabase Dashboard, lalu jalankan berkas-berkas berikut secara berurutan:
+
+1. `supabase/migrations/001_initial_schema.sql` (Membuat tabel `profiles`, `games`, `services`, `company_info`, `homepage_sections`, `inquiries`, `media`)
+2. `supabase/migrations/002_rls_policies.sql` (Mengaktifkan Row Level Security & kebijakan akses)
+3. `supabase/migrations/003_storage.sql` (Membuat bucket storage publik `website-assets` beserta kebijakannya)
+4. `supabase/seed.sql` (Opsional: mengisi data awal portofolio dan informasi studio)
+
+### 3. Konfigurasi Environment Variables
+Salin berkas `.env.example` menjadi `.env` dan masukkan kredensial proyek Supabase Anda:
+```env
+VITE_SUPABASE_URL="https://[YOUR-PROJECT-ID].supabase.co"
+VITE_SUPABASE_ANON_KEY="[YOUR-ANON-PUBLIC-KEY]"
+```
+
+### 4. Buat Akun Administrator di Supabase Auth
+Masuk ke menu **Authentication > Users** di Supabase Dashboard, klik **Add user > Create user** dengan email (contoh: `admin@indokreasi.id`) dan password pilihan Anda.
+Tambahkan role admin di tabel `profiles`:
+```sql
+INSERT INTO public.profiles (id, email, full_name, role)
+VALUES ('[USER_UUID_DARI_AUTH]', 'admin@indokreasi.id', 'Admin Indo Kreasi', 'admin');
+```
+
+---
+
+## 💻 Menjalankan Aplikasi Secara Lokal
+
+### Instalasi Dependensi
 ```bash
 npm install
 ```
 
-### 2. Mode Pengembangan (Development Server)
+### Mode Pengembangan (Dev Server)
 ```bash
 npm run dev
 ```
-Buka peramban pada alamat `http://localhost:3000`.
+Buka browser pada `http://localhost:3000`.
 
-### 3. Kompilasi Produksi (Production Build)
+### Kredensial Uji Coba Demo (Jika Supabase belum dikonfigurasi)
+Buka rute `/admin/login`:
+- **Email**: `admin@indokreasi.id`
+- **Password**: `admin123`
+*(Tersedia tombol otomatis "Gunakan Akun Demo" pada halaman login)*
+
+### Kompilasi Produksi (Production Build)
 ```bash
 npm run build
 ```
-
----
-
-## ⚙️ Konfigurasi Konten & Data Lokal
-
-Seluruh konten game, layanan, dan informasi perusahaan dapat disunting dengan mudah pada direktori `src/data/`:
-- `src/data/company.ts`: Nama studio, surel, jam kerja, sosial media, visi, misi, dan nilai.
-- `src/data/games.ts`: Daftar game, kategori, fitur, platform, dan deskripsi.
-- `src/data/services.ts`: Daftar layanan dan deliverables.
+Semua tipe TypeScript tervalidasi tanpa error.
