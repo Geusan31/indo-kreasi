@@ -15,6 +15,7 @@ import {
 import { getDashboardStats } from '../../lib/db';
 import { DashboardStats } from '../../types';
 import { LoadingState } from '../../components/ui/LoadingState';
+import { SupabaseSyncBanner } from '../../components/admin/SupabaseSyncBanner';
 
 export const DashboardOverview: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -115,6 +116,9 @@ export const DashboardOverview: React.FC = () => {
         </div>
       </div>
 
+      {/* Prominent Supabase Integration & Migration Banner */}
+      <SupabaseSyncBanner />
+
       {/* Metric Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((c, i) => (
@@ -173,13 +177,12 @@ export const DashboardOverview: React.FC = () => {
 
                 <div className="flex items-center gap-3 shrink-0">
                   <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
-                      game.status === 'published'
+                    className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${game.status === 'published'
                         ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                         : game.status === 'draft'
-                        ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                        : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
-                    }`}
+                          ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                          : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
+                      }`}
                   >
                     {game.status}
                   </span>
@@ -232,13 +235,12 @@ export const DashboardOverview: React.FC = () => {
 
                   <div className="flex items-center gap-2 shrink-0">
                     <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
-                        inq.status === 'new'
+                      className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${inq.status === 'new'
                           ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
                           : inq.status === 'replied'
-                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
-                      }`}
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
+                        }`}
                     >
                       {inq.status}
                     </span>

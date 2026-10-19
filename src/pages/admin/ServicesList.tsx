@@ -7,6 +7,7 @@ import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { LoadingState } from '../../components/ui/LoadingState';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { useToast } from '../../components/ui/Toast';
+import { SupabaseSyncBanner } from '../../components/admin/SupabaseSyncBanner';
 
 export const ServicesList: React.FC = () => {
   const { showToast } = useToast();
@@ -79,6 +80,9 @@ export const ServicesList: React.FC = () => {
         </Link>
       </div>
 
+      {/* Prominent Supabase Sync Banner */}
+      <SupabaseSyncBanner />
+
       {/* Table Container */}
       {loading ? (
         <LoadingState message="Memuat layanan..." />
@@ -132,11 +136,10 @@ export const ServicesList: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleToggleActive(service)}
-                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-mono ${
-                          service.is_active
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-mono ${service.is_active
                             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                             : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
-                        }`}
+                          }`}
                       >
                         {service.is_active ? 'Aktif' : 'Nonaktif'}
                       </button>

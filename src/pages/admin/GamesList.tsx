@@ -17,6 +17,7 @@ import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { LoadingState } from '../../components/ui/LoadingState';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { useToast } from '../../components/ui/Toast';
+import { SupabaseSyncBanner } from '../../components/admin/SupabaseSyncBanner';
 
 export const GamesList: React.FC = () => {
   const { showToast } = useToast();
@@ -118,6 +119,9 @@ export const GamesList: React.FC = () => {
           <span>Tambah Game Baru</span>
         </Link>
       </div>
+
+      {/* Prominent Supabase Sync Banner */}
+      <SupabaseSyncBanner />
 
       {/* Filter and Search Bar */}
       <div className="p-4 rounded-xl bg-[#171321] border border-[#332A45] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
@@ -232,13 +236,12 @@ export const GamesList: React.FC = () => {
                     {/* Status Badge */}
                     <td className="py-3.5 px-4 text-center whitespace-nowrap">
                       <span
-                        className={`inline-block px-2.5 py-1 rounded text-[11px] font-mono font-medium ${
-                          game.status === 'published'
+                        className={`inline-block px-2.5 py-1 rounded text-[11px] font-mono font-medium ${game.status === 'published'
                             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                             : game.status === 'draft'
-                            ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                            : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
-                        }`}
+                              ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                              : 'bg-gray-500/10 text-gray-400 border border-gray-500/30'
+                          }`}
                       >
                         {game.status}
                       </span>
@@ -249,11 +252,10 @@ export const GamesList: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleToggleFeatured(game)}
-                        className={`p-1 rounded transition-colors ${
-                          game.featured
+                        className={`p-1 rounded transition-colors ${game.featured
                             ? 'text-amber-400 hover:text-amber-300'
                             : 'text-[#A7A1B5]/40 hover:text-[#A7A1B5]'
-                        }`}
+                          }`}
                         title={game.featured ? 'Game Unggulan (Homepage)' : 'Bukan Unggulan'}
                       >
                         <Star className={`w-4 h-4 ${game.featured ? 'fill-amber-400' : ''}`} />

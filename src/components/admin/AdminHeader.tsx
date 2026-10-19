@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Database, ShieldCheck, User } from 'lucide-react';
 import { useAuth } from '../../lib/AuthContext';
-import { isSupabaseConfigured } from '../../lib/supabase';
+import { checkIsSupabaseConfigured } from '../../lib/supabase';
 import { Link } from 'react-router-dom';
 
 interface AdminHeaderProps {
@@ -13,7 +13,14 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   onOpenMobileMenu,
   title,
 }) => {
-  const { profile, user } = useAuth();
+  const { user, profile } = useAuth();
+  const [connected, setConnected] = React.useState(checkIsSupabaseConfigured());
+
+  React.useEffect(() => {
+    const handleUpdate = () => setConnected(checkIsSupabaseConfigured());
+    window.addEventListener('indokreasi_supabase_configured', handleUpdate);
+    return () => window.removeEventListener('indokreasi_supabase_configured', handleUpdate);
+  }, []);
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-[#09090F]/90 backdrop-blur-md border-b border-[#332A45] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -33,18 +40,26 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         )}
       </div>
 
-      <div className="flex items-center gap-4 text-xs">
-        {/* Supabase Connection Status Badge */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-mono bg-[#171321] border-[#332A45]">
+      <div className="flex items-center gap-3 sm:gap-4 text-xs">
+        {/* Supabase Connection Status Badge with Link to Settings */}
+        <Link
+          to="/admin/settings"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[11px] font-mono bg-[#171321] hover:bg-[#201A2D] border-[#332A45] hover:border-[#8B5CF6]/50 transition-all cursor-pointer"
+          title="Klik untuk membuka pengaturan Supabase & Migrasi Data"
+        >
           <Database className="w-3.5 h-3.5 text-[#8B5CF6]" />
-          {isSupabaseConfigured ? (
-            <span className="text-emerald-400">Supabase: Terhubung</span>
+          {connected ? (
+            <span className="text-emerald-400 font-semibold flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Supabase Terhubung
+            </span>
           ) : (
-            <span className="text-[#C4B5FD]" title="Menggunakan local reactive store hingga kunci Supabase dimasukkan">
-              Database: Mode Lokal (Siap Migrasi)
+            <span className="text-amber-400 font-semibold flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+              Mode Lokal (Klik Migrasi)
             </span>
           )}
-        </div>
+        </Link>
 
         {/* Admin Profile Link */}
         <Link
